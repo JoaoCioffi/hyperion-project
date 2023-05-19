@@ -27,7 +27,7 @@ This repository contains the following:
 
 To get started with the Hyperion Project, follow these steps:
 
-1. Clone the repository to your local machine using the following command: ```git clone https://github.com/Joao-Cioffi/hyperion-project.git```
+1. Clone the repository to your local machine using the following command: ```git clone https://github.com/JoaoCioffi/hyperion-project.git```
 
 2. Explore the various directories and files within the repository to find tutorials, code examples, and resources that interest you.
 
