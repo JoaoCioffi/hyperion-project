@@ -41,4 +41,4 @@ Contributions to the Hyperion Project are welcome and encouraged! If you have an
 
 ## License
 
-The content of this repository is licensed under the [MIT License](LICENSE). By contributing to this repository, you agree to abide by the terms of this license.
+The content of this repository is licensed under the [Apache 2.0](LICENSE). By contributing to this repository, you agree to abide by the terms of this license.
