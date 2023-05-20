@@ -183,3 +183,8 @@ You can also run a cloudera-quickstart machine using a VM (such as virtualbox) f
 In this case you need to download a full built app (e.g a CentOS redhat based) that has the Cloudera environment inside.
 
 In a nutshell: first install virtual-box in your OS and then import your cloudera-quickstart appliance using a VM.
+
+# 🔴 Disclaimer 🔴
+
+The original tutorial was built to work with Ubuntu 16.04 and I tried it using Ubuntu 22.04.2 LTS.
+It worked normally including all the Cloudera basic services, it demonstrated a stable response. The only issue I've noticed was some warning msgs related to deprecated versions (probably related to the docker older images). You can use it by your own risk.
