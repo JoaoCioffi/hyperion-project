@@ -151,8 +151,30 @@ chmod +x run.sh
 Since . refers to the current directory: if yourscript.sh is in the current directory, you can simplify this to:
 
 ```
-./yourscript.sh
+./run.sh
 ```
+
+## Important!
+
+Obs: To copy a file from your Ubuntu host OS to the Cloudera QuickStart container, you can follow these steps:
+
+1. Identify the file you want to copy: Make sure you know the path and name of the file you want to transfer from your Ubuntu host to the Cloudera container.
+
+2. Copy the file to the container: You can use the docker cp command to copy the file from your host to the container. The syntax for the command is as follows:
+
+```docker cp <path_to_local_file> <container_name_or_id>:<path_in_container>```
+
+Replace <path_to_local_file> with the full path to the file on your Ubuntu host, <container_name_or_id> with the name or ID of your running Cloudera QuickStart container, and <path_in_container> with the desired path inside the container where you want to place the file.
+
+For example, if you want to copy a file named example.txt located in your home directory (/home/your_username/example.txt) to the /zaid directory inside the container, the command would be:
+
+```docker cp /home/your_username/example.txt my_cloudera_container:/zaid/```
+
+Note: You can use the docker ps command to list the running containers and find the name or ID of your Cloudera QuickStart container.
+
+3. Access the file in the Cloudera environment: Once the file is copied, you can access it within the Cloudera QuickStart container at the specified path (/zaid in the example above). You can use the Cloudera user interface or command-line tools within the container to work with the file as needed.
+
+Remember that the Cloudera QuickStart container operates as an isolated environment with its own file system. It doesn't directly share the same root file system as your Ubuntu host. Therefore, to transfer files between the host and container, you need to use the docker cp command as outlined above.
 
 # Cloudera Quickstart on VM
 
