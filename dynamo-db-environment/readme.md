@@ -6,7 +6,7 @@
 
 DynamoDB is a fully managed NoSQL database provided by AWS. Since it’s a pay-as-you-go cloud resource, developers may often need to opt-out from accessing AWS every time to keep their cloud bills at a minimum during the development and testing stages. However, you may still need to run and test the code that consumes DynamoDB features via stubs / mock interfaces / some cost-effective and convenient-to-setup solution locally. Also, the daily CI/CD pipelines may want to run some parts of automated test suites very frequently without relying on the AWS resources. These are some common developer pain points when using managed cloud services like DyanamoDB.
 
-DynamoDB Local initiative by the official AWS DynamoDB Team address many development-related concerns by providing a self-contained version of DyanamoDB for local and offline use ❤
+DynamoDB Local initiative by the official AWS DynamoDB Team address many development-related concerns by providing a self-contained version of DyanamoDB for local and offline use
 In this quick tutorial, let’s learn how to,
 1. — Setup DynamDB Local with Docker / Docker-Compose
 2. — Connect programmatically with AWS-CLI / AWS-SDK
