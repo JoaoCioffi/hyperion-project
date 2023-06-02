@@ -28,13 +28,12 @@ Consider this official documentation for the parameters:
 
 }
 
-Now build a "Follow the centerline" (Sections the track into three reward zones. The farther the car strays from the centerline, the less it’s rewarded) considering:
+Now build a "Follow the centerline" (Sections the track into three reward zones. The farther the car strays from the centerline, the less it's rewarded) considering:
 
 - the track is re:invent 2018
 - it's a PPO
 - the race type is time trial
-- the current benchmark time is 00:55.457 (1st opponent) -> The function could, for example, get a reward if completes the lap and more reward if it is faster than benchmark_time
-- I realized in the streaming video (training steps) the car sometimes got out of the track borders. How to add a penalty if the car goes outside the track boundaries? And can you please include rewards for 3 complete laps without going outside the track?
+- can you please include rewards for 3 complete laps without going outside the track?
 
 You can include even more parameters considering:
 - Compare the car heading direction with the track direction.
@@ -284,3 +283,7 @@ def reward_function(params):
     reward = max(reward, straight_reward)
 
     return float(reward)
+
+
+
+
