@@ -7,8 +7,6 @@ dotEnv=load_dotenv()
 # boto3 is the AWS SDK library for Python.
 # We can use the low-level client to make API calls to DynamoDB.
 
-# client = boto3.client('dynamodb', region_name='us-east-1')
-
 resource = boto3.resource("dynamodb",
                            region_name=os.getenv("AWS_REGION"),
                            endpoint_url=os.getenv("DYNAMO_ENDPOINT"),
