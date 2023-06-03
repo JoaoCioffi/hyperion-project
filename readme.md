@@ -20,14 +20,14 @@ This repository contains the following:
 
 - **Tutorials**: Step-by-step guides and tutorials covering various topics related to big data, data architecture, machine learning, data science, and analytics.
 - **Code Examples**: Practical examples and implementations of algorithms, models, and techniques for working with large datasets, data processing, machine learning algorithms, data visualization, and more.
-- **Resources**: Curated lists of books, research papers, online courses, and other external resources to help you deepen your understanding of big data, data architecture, machine learning, data science, and analytics.
-- **Best Practices**: Articles and guidelines on best practices, tips, and tricks for designing scalable data architectures, optimizing machine learning workflows, and performing effective data analysis.
 
 ## Getting Started
 
 To get started with the Hyperion Project, follow these steps:
 
-1. Clone the repository to your local machine using the following command: ```git clone https://github.com/JoaoCioffi/hyperion-project.git```
+1. Clone the repository to your local machine using the following command: 
+
+    ```git clone https://github.com/JoaoCioffi/hyperion-project.git```
 
 2. Explore the various directories and files within the repository to find tutorials, code examples, and resources that interest you.
 
