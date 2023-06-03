@@ -1,5 +1,3 @@
-![Apache Spark](https://img.shields.io/badge/Apache%20Spark-FDEE21?style=flat-square&logo=apachespark&logoColor=black)![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
-
 ```
 Welcome to
       ____              __
@@ -9,9 +7,9 @@ Welcome to
       /_/
 ```
 
-* **Official Download Source:** https://spark.apache.org/downloads.html
+![Apache Spark](https://img.shields.io/badge/Apache%20Spark-FDEE21?style=flat-square&logo=apachespark&logoColor=black) **Official Download Source:** https://spark.apache.org/downloads.html
 
-# PySpark on Ubuntu 22.04:
+# ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white) PySpark on Ubuntu 22.04:
 
 > Tutorial Adapted from: https://linuxhint.com/install-pyspark-ubuntu-22-04/
 
