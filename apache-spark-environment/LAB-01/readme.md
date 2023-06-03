@@ -2,4 +2,7 @@
 
 # ~ About LAB-01 ~
 
-Hands-on: Criar uma aplicação Spark usando pyspark no EMR
+* Hands-on: create a Spark application using PySpark with Amazon EMR (Elastic MapReduce).
+* Use case: “Food Establishment Inspection Data” (https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs.html).
+
+> Official EMR documentation: https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html
