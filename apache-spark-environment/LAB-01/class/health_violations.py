@@ -1,5 +1,4 @@
 import argparse
-
 from pyspark.sql import SparkSession
 
 def calculate_red_violations(data_source, output_uri):
