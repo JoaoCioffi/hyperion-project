@@ -13,7 +13,7 @@ In this quick tutorial, let’s learn how to,
 3. — View tables with DyanmoDB Admin Dashboard GUI
 4. — Inspiration for testing with stubs
 
-## 1 — Setup DynamDB Local with Docker/Docker-Compose
+## 1 — Setup DynamoDB Local with Docker/Docker-Compose
 
 ### (1.1) Docker way
 
