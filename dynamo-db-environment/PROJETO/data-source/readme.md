@@ -1,1 +1,0 @@
-Source: https://www.ssp.sp.gov.br/transparenciassp/Consulta2022.aspx
