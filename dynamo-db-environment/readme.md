@@ -59,7 +59,7 @@ After getting your local DyanamoDB instance successfully set up, now you should 
 ### (2.1) AWS-CLI Way
 
 ```
-aws dynamodb <command> --endpoint-url http://localhost:8000e.g.
+aws dynamodb <command> --endpoint-url http://localhost:8000
 aws dynamodb list-tables --endpoint-url http://localhost:8000
 ```
 
