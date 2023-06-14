@@ -104,6 +104,7 @@ class TB_REGISTRO():
                 "STATUS":str(v[10])
             }
 
+            print('-='*30,'\n')
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
             
@@ -200,6 +201,7 @@ class TB_ENDERECO():
                 "DELEGACIANOME":str(v[7])
             }
 
+            print('-='*30,'\n')
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
 
@@ -294,6 +296,7 @@ class TB_VITIMA():
                 "IDADE":str(v[6]),
             }
 
+            print('-='*30,'\n')
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
 
@@ -386,6 +389,7 @@ class TB_TELEFONE():
                 "MARCA_CELULAR":str(v[4])
             }
 
+            print('-='*30,'\n')
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
 
@@ -411,6 +415,7 @@ class TB_TELEFONE():
 
 
 if __name__ == "__main__":
+    
     begin_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     tic=time.time()
     
@@ -419,7 +424,13 @@ if __name__ == "__main__":
     asyncio.run(TB_VITIMA.callDynamoService())
     asyncio.run(TB_TELEFONE.callDynamoService())
     
-    end_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     toc=time.time()
-    print(f'\nTotal elapsed time is {round(toc-tic,4)}s | Global insertion rate average ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...')
+    end_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    print('_'*35)
+    print("\n[TASK FINISHED]")
+    print('_'*35)
+
     print(f'Process started on [{begin_timestamp}] and terminated on [{end_timestamp}].\n')
+    print(f'\nTotal elapsed time is {round(toc-tic,4)}s')
+    print(f'Global insertion rate average ~ {round(1/st.mean(insertionTimelapse),4)} items/sec')
