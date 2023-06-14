@@ -1,11 +1,12 @@
 from boto3.dynamodb.conditions import Key,Attr
 from botocore.exceptions import ClientError
 from data_source import loadData
+from datetime import datetime
+import pandas as pd
 import env
 import boto3
 import json
 import asyncio
-import pandas as pd
 import decimal
 import time
 
@@ -181,7 +182,7 @@ class TB_ENDERECO():
             dynamoItem={
                 "NUM_BO":int(v[0]),
                 "LOGRADOURO":str(v[1]),
-                "NUMERO":int(v[2]),
+                "NUMERO":str(v[2]),
                 "BAIRRO":str(v[3]),
                 "CIDADE":str(v[4]),
                 "UF":str(v[5]),
@@ -353,9 +354,9 @@ class TB_TELEFONE():
         for v in dataset.values:
             dynamoItem={
                 "NUM_BO":int(v[0]),
-                "ANO_FABRICACAO":int(v[1]),
-                "ANO_MODELO":int(v[2]),
-                "QUANT_CELULAR":int(v[3]),
+                "ANO_FABRICACAO":str(v[1]),
+                "ANO_MODELO":str(v[2]),
+                "QUANT_CELULAR":str(v[3]),
                 "MARCA_CELULAR":str(v[4])
             }
 
@@ -376,9 +377,15 @@ class TB_TELEFONE():
 
 
 if __name__ == "__main__":
-    start = time.time()
+    begin_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    tic=time.time()
+    
     asyncio.run(TB_REGISTRO.callDynamoService())
     asyncio.run(TB_ENDERECO.callDynamoService())
     asyncio.run(TB_VITIMA.callDynamoService())
     asyncio.run(TB_TELEFONE.callDynamoService())
-    print(f'\nElapsed time is {time.time()-start}...\n')
+    
+    end_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    toc=time.time()
+    print(f'\nTotal elapsed time is {toc-tic}...')
+    print(f'Process started on [{begin_timestamp}] and terminated on [{end_timestamp}].\n')
