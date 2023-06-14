@@ -115,9 +115,11 @@ class TB_REGISTRO():
                 tf=time.time()
                 insertionTimelapse.append(tf-t0) # calculated insertion timelapse
                 print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec | Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
+                del t0,tf
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
+                del t0
 
 
     @classmethod
@@ -207,9 +209,11 @@ class TB_ENDERECO():
                 tf=time.time()
                 insertionTimelapse.append(tf-t0) # calculated insertion timelapse
                 print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec| Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
+                del t0,tf
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
+                del t0
 
     @classmethod
     async def callDynamoService(self):
@@ -297,9 +301,11 @@ class TB_VITIMA():
                 tf=time.time()
                 insertionTimelapse.append(tf-t0) # calculated insertion timelapse
                 print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec | Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
+                del t0,tf
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
+                del t0
 
     @classmethod
     async def callDynamoService(self):
@@ -385,9 +391,11 @@ class TB_TELEFONE():
                 tf=time.time()
                 insertionTimelapse.append(tf-t0) # calculated insertion timelapse
                 print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec | Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
+                del t0,tf
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
+                del t0
 
     @classmethod
     async def callDynamoService(self):
