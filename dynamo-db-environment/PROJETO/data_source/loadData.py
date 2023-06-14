@@ -4,7 +4,7 @@ def tablesGenerator(filename='rawData.csv'):
 
     # loading dataset from a .csv file (raw)
     df_raw = pd.read_csv(
-        './data_source/rawData.csv',
+        './data_source/' + filename,
         encoding='utf-8',
         delimiter=';'
         )
