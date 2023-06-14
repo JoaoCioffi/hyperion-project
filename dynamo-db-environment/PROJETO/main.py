@@ -2,6 +2,7 @@ from boto3.dynamodb.conditions import Key,Attr
 from botocore.exceptions import ClientError
 from data_source import loadData
 from datetime import datetime
+import statistics as st
 import pandas as pd
 import env
 import boto3
@@ -19,6 +20,7 @@ dynamodb=boto3.resource(
                             aws_access_key_id=env['aws-access-key-id'], 
                             aws_secret_access_key=env['aws-secret-access-key']
                         ) # Connect to local instance
+insertionTimelapse=[] #list to append all calculated insertion time for table items
 
 class TB_REGISTRO():
     
@@ -105,10 +107,14 @@ class TB_REGISTRO():
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
             
+            t0=time.time()
             # Checks if the item already exists in the table
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']) & Attr('ANO_BO').eq(dynamoItem['ANO_BO']))
             if scanTable['Count'] == 0:
                 table.put_item(Item=dumpedItem) # Insert item
+                tf=time.time()
+                insertionTimelapse.append(tf-t0) # calculated insertion timelapse
+                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}...\n')
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
@@ -193,10 +199,14 @@ class TB_ENDERECO():
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
 
+            t0=time.time()
             # Checks if the item already exists in the table
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
                 table.put_item(Item=dumpedItem) # Insert item
+                tf=time.time()
+                insertionTimelapse.append(tf-t0) # calculated insertion timelapse
+                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}...\n')
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
@@ -279,10 +289,14 @@ class TB_VITIMA():
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
 
+            t0=time.time()
             # Checks if the item already exists in the table
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
                 table.put_item(Item=dumpedItem) # Insert item
+                tf=time.time()
+                insertionTimelapse.append(tf-t0) # calculated insertion timelapse
+                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}...\n')
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
@@ -363,10 +377,14 @@ class TB_TELEFONE():
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
 
+            t0=time.time()
             # Checks if the item already exists in the table
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
                 table.put_item(Item=dumpedItem) # Insert item
+                tf=time.time()
+                insertionTimelapse.append(tf-t0) # calculated insertion timelapse
+                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}...\n')
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
@@ -387,5 +405,5 @@ if __name__ == "__main__":
     
     end_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     toc=time.time()
-    print(f'\nTotal elapsed time is {toc-tic}...')
+    print(f'\nTotal elapsed time is {round(toc-tic,4)} and global insertion timelapse is {round(st.mean(insertionTimelapse),4)}...')
     print(f'Process started on [{begin_timestamp}] and terminated on [{end_timestamp}].\n')
