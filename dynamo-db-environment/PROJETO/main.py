@@ -7,6 +7,7 @@ import json
 import asyncio
 import pandas as pd
 import decimal
+import time
 
 env=env.environment()
 tables=loadData.tablesGenerator()
@@ -21,11 +22,14 @@ dynamodb=boto3.resource(
 class TB_REGISTRO():
     
     def __init__(self):
+        print('_'*35)
+        print("\n.::. [TB_REGISTRO] .::.")
+        print('_'*35)
         super(TB_REGISTRO.self).__init__()
     
     @classmethod
     async def createTable(self,table_name='TB_REGISTRO'):
-        
+
         # table attributes
         attribute_definitions=[
             {
@@ -67,7 +71,7 @@ class TB_REGISTRO():
         
         except ClientError as e:
             if e.response['Error']['Code'] == 'ResourceInUseException':
-                print('Table already exists, skipping...')
+                print('\n>> Table already exists, skipping...\n')
             else:
                 return e
 
@@ -96,17 +100,17 @@ class TB_REGISTRO():
                 "SOLUCAO":str(v[9]),
                 "STATUS":str(v[10])
             }
-            
+
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
             
-            # Check if the item already exists in the table
+            # Checks if the item already exists in the table
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']) & Attr('ANO_BO').eq(dynamoItem['ANO_BO']))
             if scanTable['Count'] == 0:
                 table.put_item(Item=dumpedItem) # Insert item
             else:
                 # The item already exists, ignore it
-                print('Item already exists in the table!\nSkipping...\n')
+                print('\n>> Item already exists in the table!\nSkipping...\n')
 
 
     @classmethod
@@ -117,7 +121,84 @@ class TB_REGISTRO():
 class TB_ENDERECO():
     
     def __init__(self):
+        print('_'*35)
+        print("\n.::. [TB_ENDERECO] .::.")
+        print('_'*35)
         super(TB_ENDERECO.self).__init__()
+    
+    @classmethod
+    async def createTable(self,table_name='TB_ENDERECO'):
+
+        # table attributes
+        attribute_definitions=[
+            {
+                'AttributeName': 'NUM_BO',
+                'AttributeType': 'N'
+            }
+        ]
+
+        # table primary keys
+        key_schema=[
+            {
+                'AttributeName': 'NUM_BO',
+                'KeyType': 'HASH'  # partition key
+            }
+        ]
+
+        # capacity settings
+        provisioned_throughput={
+            'ReadCapacityUnits': 5,
+            'WriteCapacityUnits': 5
+        }
+
+        try:
+            table=dynamodb.create_table(
+                TableName=table_name,
+                AttributeDefinitions=attribute_definitions,
+                KeySchema=key_schema,
+                ProvisionedThroughput=provisioned_throughput
+            )
+            table.wait_until_exists()
+        
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'ResourceInUseException':
+                print('\n>> Table already exists, skipping...\n')
+            else:
+                return e
+    
+    @classmethod
+    async def insertItems(
+                            self,
+                            table_name='TB_ENDERECO',
+                            loadedTable=tables['TB_ENDERECO'].values
+                        ):
+        
+        response=await self.createTable()
+        table=dynamodb.Table(table_name)
+        dataset=pd.DataFrame(loadedTable)
+
+        for v in dataset.values:
+            dynamoItem={
+                "NUM_BO":int(v[0]),
+                "LOGRADOURO":str(v[1]),
+                "NUMERO":int(v[2]),
+                "BAIRRO":str(v[3]),
+                "CIDADE":str(v[4]),
+                "UF":str(v[5]),
+                "DESCRICAOLOCAL":str(v[6]),
+                "DELEGACIANOME":str(v[7])
+            }
+
+            print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
+            dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
+
+            # Checks if the item already exists in the table
+            scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
+            if scanTable['Count'] == 0:
+                table.put_item(Item=dumpedItem) # Insert item
+            else:
+                # The item already exists, ignore it
+                print('\n>> Item already exists in the table!\nSkipping...\n')
 
     @classmethod
     async def callDynamoService(self):
@@ -127,7 +208,83 @@ class TB_ENDERECO():
 class TB_VITIMA():
     
     def __init__(self):
+        print('_'*35)
+        print("\n.::. [TB_VITIMA] .::.")
+        print('_'*35)
         super(TB_VITIMA.self).__init__()
+    
+    @classmethod
+    async def createTable(self,table_name='TB_VITIMA'):
+
+        # table attributes
+        attribute_definitions=[
+            {
+                'AttributeName': 'NUM_BO',
+                'AttributeType': 'N'
+            }
+        ]
+
+        # table primary keys
+        key_schema=[
+            {
+                'AttributeName': 'NUM_BO',
+                'KeyType': 'HASH'  # partition key
+            }
+        ]
+
+        # capacity settings
+        provisioned_throughput={
+            'ReadCapacityUnits': 5,
+            'WriteCapacityUnits': 5
+        }
+
+        try:
+            table=dynamodb.create_table(
+                TableName=table_name,
+                AttributeDefinitions=attribute_definitions,
+                KeySchema=key_schema,
+                ProvisionedThroughput=provisioned_throughput
+            )
+            table.wait_until_exists()
+        
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'ResourceInUseException':
+                print('\n>> Table already exists, skipping...\n')
+            else:
+                return e
+        
+    @classmethod
+    async def insertItems(
+                            self,
+                            table_name='TB_VITIMA',
+                            loadedTable=tables['TB_VITIMA'].values
+                        ):
+        
+        response=await self.createTable()
+        table=dynamodb.Table(table_name)
+        dataset=pd.DataFrame(loadedTable)
+
+        for v in dataset.values:
+            dynamoItem={
+                "NUM_BO":int(v[0]),
+                "TIPOPESSOA":str(v[1]),
+                "VITIMAFATAL":str(v[2]),
+                "NACIONALIDADE":str(v[3]),
+                "SEXO":str(v[4]),
+                "DATANASCIMENTO":str(v[5]),
+                "IDADE":str(v[6]),
+            }
+
+            print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
+            dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
+
+            # Checks if the item already exists in the table
+            scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
+            if scanTable['Count'] == 0:
+                table.put_item(Item=dumpedItem) # Insert item
+            else:
+                # The item already exists, ignore it
+                print('\n>> Item already exists in the table!\nSkipping...\n')
 
     @classmethod
     async def callDynamoService(self):
@@ -137,7 +294,81 @@ class TB_VITIMA():
 class TB_TELEFONE():
     
     def __init__(self):
+        print('_'*35)
+        print("\n.::. [TB_TELEFONE] .::.")
+        print('_'*35)
         super(TB_TELEFONE.self).__init__()
+    
+    @classmethod
+    async def createTable(self,table_name='TB_TELEFONE'):
+
+        # table attributes
+        attribute_definitions=[
+            {
+                'AttributeName': 'NUM_BO',
+                'AttributeType': 'N'
+            }
+        ]
+
+        # table primary keys
+        key_schema=[
+            {
+                'AttributeName': 'NUM_BO',
+                'KeyType': 'HASH'  # partition key
+            }
+        ]
+
+        # capacity settings
+        provisioned_throughput={
+            'ReadCapacityUnits': 5,
+            'WriteCapacityUnits': 5
+        }
+
+        try:
+            table=dynamodb.create_table(
+                TableName=table_name,
+                AttributeDefinitions=attribute_definitions,
+                KeySchema=key_schema,
+                ProvisionedThroughput=provisioned_throughput
+            )
+            table.wait_until_exists()
+        
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'ResourceInUseException':
+                print('\n>> Table already exists, skipping...\n')
+            else:
+                return e
+        
+    @classmethod
+    async def insertItems(
+                            self,
+                            table_name='TB_TELEFONE',
+                            loadedTable=tables['TB_TELEFONE'].values
+                        ):
+        
+        response=await self.createTable()
+        table=dynamodb.Table(table_name)
+        dataset=pd.DataFrame(loadedTable)
+
+        for v in dataset.values:
+            dynamoItem={
+                "NUM_BO":int(v[0]),
+                "ANO_FABRICACAO":int(v[1]),
+                "ANO_MODELO":int(v[2]),
+                "QUANT_CELULAR":int(v[3]),
+                "MARCA_CELULAR":str(v[4])
+            }
+
+            print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
+            dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
+
+            # Checks if the item already exists in the table
+            scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
+            if scanTable['Count'] == 0:
+                table.put_item(Item=dumpedItem) # Insert item
+            else:
+                # The item already exists, ignore it
+                print('\n>> Item already exists in the table!\nSkipping...\n')
 
     @classmethod
     async def callDynamoService(self):
@@ -145,7 +376,9 @@ class TB_TELEFONE():
 
 
 if __name__ == "__main__":
+    start = time.time()
     asyncio.run(TB_REGISTRO.callDynamoService())
     asyncio.run(TB_ENDERECO.callDynamoService())
     asyncio.run(TB_VITIMA.callDynamoService())
     asyncio.run(TB_TELEFONE.callDynamoService())
+    print(f'\nElapsed time is {time.time()-start}...\n')
