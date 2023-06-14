@@ -81,7 +81,7 @@ class TB_REGISTRO():
         response=await self.createTable()
         table=dynamodb.Table(table_name)
         dataset=pd.DataFrame(loadedTable)
-        
+
         for v in dataset.values:
             dynamoItem={
                 "NUM_BO":int(v[0]),
@@ -113,5 +113,39 @@ class TB_REGISTRO():
     async def callDynamoService(self):
         await self.insertItems()
 
+
+class TB_ENDERECO():
+    
+    def __init__(self):
+        super(TB_ENDERECO.self).__init__()
+
+    @classmethod
+    async def callDynamoService(self):
+        await self.insertItems()
+
+
+class TB_VITIMA():
+    
+    def __init__(self):
+        super(TB_VITIMA.self).__init__()
+
+    @classmethod
+    async def callDynamoService(self):
+        await self.insertItems()
+
+
+class TB_TELEFONE():
+    
+    def __init__(self):
+        super(TB_TELEFONE.self).__init__()
+
+    @classmethod
+    async def callDynamoService(self):
+        await self.insertItems()
+
+
 if __name__ == "__main__":
     asyncio.run(TB_REGISTRO.callDynamoService())
+    asyncio.run(TB_ENDERECO.callDynamoService())
+    asyncio.run(TB_VITIMA.callDynamoService())
+    asyncio.run(TB_TELEFONE.callDynamoService())
