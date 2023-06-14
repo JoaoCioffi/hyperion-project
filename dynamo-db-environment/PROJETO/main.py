@@ -114,7 +114,7 @@ class TB_REGISTRO():
                 table.put_item(Item=dumpedItem) # Insert item
                 tf=time.time()
                 insertionTimelapse.append(tf-t0) # calculated insertion timelapse
-                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}...\n')
+                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec | Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
@@ -206,7 +206,7 @@ class TB_ENDERECO():
                 table.put_item(Item=dumpedItem) # Insert item
                 tf=time.time()
                 insertionTimelapse.append(tf-t0) # calculated insertion timelapse
-                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}...\n')
+                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec| Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
@@ -296,7 +296,7 @@ class TB_VITIMA():
                 table.put_item(Item=dumpedItem) # Insert item
                 tf=time.time()
                 insertionTimelapse.append(tf-t0) # calculated insertion timelapse
-                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}...\n')
+                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec | Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
@@ -384,7 +384,7 @@ class TB_TELEFONE():
                 table.put_item(Item=dumpedItem) # Insert item
                 tf=time.time()
                 insertionTimelapse.append(tf-t0) # calculated insertion timelapse
-                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}...\n')
+                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec | Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
@@ -405,5 +405,5 @@ if __name__ == "__main__":
     
     end_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     toc=time.time()
-    print(f'\nTotal elapsed time is {round(toc-tic,4)} and global insertion timelapse is {round(st.mean(insertionTimelapse),4)}...')
+    print(f'\nTotal elapsed time is {round(toc-tic,4)}, the global insertion timelapse is up to {round(st.mean(insertionTimelapse),4)}sec and the global insertion rate is up to {round(1/st.mean(insertionTimelapse),4)} items/sec...')
     print(f'Process started on [{begin_timestamp}] and terminated on [{end_timestamp}].\n')
