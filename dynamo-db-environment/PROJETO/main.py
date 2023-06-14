@@ -107,19 +107,21 @@ class TB_REGISTRO():
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
             
-            t0=time.time()
             # Checks if the item already exists in the table
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']) & Attr('ANO_BO').eq(dynamoItem['ANO_BO']))
             if scanTable['Count'] == 0:
+                t0=time.time()
+                
                 table.put_item(Item=dumpedItem) # Insert item
+                
                 tf=time.time()
-                insertionTimelapse.append(tf-t0) # calculated insertion timelapse
-                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec | Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
-                del t0,tf
+                insertionTimelapse.append(tf-t0)
+                insertionRateAvg=st.mean(insertionTimelapse)
+                print(f'\n>> Insertion rate average ~ {round(1/insertionRateAvg,4)} items/sec...\n')
+                del t0,tf,insertionRateAvg
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
-                del t0
 
 
     @classmethod
@@ -201,19 +203,21 @@ class TB_ENDERECO():
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
 
-            t0=time.time()
             # Checks if the item already exists in the table
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
+                t0=time.time()
+                
                 table.put_item(Item=dumpedItem) # Insert item
+                
                 tf=time.time()
-                insertionTimelapse.append(tf-t0) # calculated insertion timelapse
-                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec| Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
-                del t0,tf
+                insertionTimelapse.append(tf-t0)
+                insertionRateAvg=st.mean(insertionTimelapse)
+                print(f'\n>> Insertion rate average ~ {round(1/insertionRateAvg,4)} items/sec...\n')
+                del t0,tf,insertionRateAvg
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
-                del t0
 
     @classmethod
     async def callDynamoService(self):
@@ -293,19 +297,21 @@ class TB_VITIMA():
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
 
-            t0=time.time()
             # Checks if the item already exists in the table
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
+                t0=time.time()
+                
                 table.put_item(Item=dumpedItem) # Insert item
+                
                 tf=time.time()
-                insertionTimelapse.append(tf-t0) # calculated insertion timelapse
-                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec | Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
-                del t0,tf
+                insertionTimelapse.append(tf-t0)
+                insertionRateAvg=st.mean(insertionTimelapse)
+                print(f'\n>> Insertion rate average ~ {round(1/insertionRateAvg,4)} items/sec...\n')
+                del t0,tf,insertionRateAvg
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
-                del t0
 
     @classmethod
     async def callDynamoService(self):
@@ -383,19 +389,21 @@ class TB_TELEFONE():
             print(json.dumps(dynamoItem,indent=4,ensure_ascii=False),'\n')
             dumpedItem = json.loads(json.dumps(dynamoItem), parse_float=decimal.Decimal) # Convert float values to Decimal
 
-            t0=time.time()
             # Checks if the item already exists in the table
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
+                t0=time.time()
+                
                 table.put_item(Item=dumpedItem) # Insert item
+                
                 tf=time.time()
-                insertionTimelapse.append(tf-t0) # calculated insertion timelapse
-                print(f'\n>> Item insertion timelapse ~ {round(st.mean(insertionTimelapse),4)}sec | Insertion rate is ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...\n')
-                del t0,tf
+                insertionTimelapse.append(tf-t0)
+                insertionRateAvg=st.mean(insertionTimelapse)
+                print(f'\n>> Insertion rate average ~ {round(1/insertionRateAvg,4)} items/sec...\n')
+                del t0,tf,insertionRateAvg
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
-                del t0
 
     @classmethod
     async def callDynamoService(self):
@@ -413,5 +421,5 @@ if __name__ == "__main__":
     
     end_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     toc=time.time()
-    print(f'\nTotal elapsed time is {round(toc-tic,4)}, the global insertion timelapse is up to {round(st.mean(insertionTimelapse),4)}sec and the global insertion rate is up to {round(1/st.mean(insertionTimelapse),4)} items/sec...')
+    print(f'\nTotal elapsed time is {round(toc-tic,4)}s | Global insertion rate average ~ {round(1/st.mean(insertionTimelapse),4)} items/sec...')
     print(f'Process started on [{begin_timestamp}] and terminated on [{end_timestamp}].\n')
