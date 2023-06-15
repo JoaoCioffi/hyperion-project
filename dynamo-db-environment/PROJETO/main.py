@@ -88,6 +88,7 @@ class TB_REGISTRO():
         response=await self.createTable()
         table=dynamodb.Table(table_name)
         dataset=pd.DataFrame(loadedTable)
+        counter=0
 
         for v in dataset.values:
             dynamoItem={
@@ -112,13 +113,14 @@ class TB_REGISTRO():
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']) & Attr('ANO_BO').eq(dynamoItem['ANO_BO']))
             if scanTable['Count'] == 0:
                 t0=time.time()
-                
+                counter+=1
+
                 table.put_item(Item=dumpedItem) # Insert item
                 
                 tf=time.time()
                 insertionTimelapse.append(tf-t0)
                 insertionRateAvg=st.mean(insertionTimelapse)
-                print(f'\n>> Insertion rate average ~ {round(1/insertionRateAvg,4)} items/sec...\n')
+                print(f'\n>> Current Avg Insertion Rate ~ {round(1/insertionRateAvg,4)} items/sec in a total of {counter} iserted items...\n')
                 del t0,tf,insertionRateAvg
             else:
                 # The item already exists, ignore it
@@ -184,7 +186,7 @@ class TB_ENDERECO():
                             table_name='TB_ENDERECO',
                             loadedTable=tables['TB_ENDERECO'].values
                         ):
-        
+        counter=0
         response=await self.createTable()
         table=dynamodb.Table(table_name)
         dataset=pd.DataFrame(loadedTable)
@@ -209,13 +211,14 @@ class TB_ENDERECO():
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
                 t0=time.time()
-                
+                counter+=1
+
                 table.put_item(Item=dumpedItem) # Insert item
                 
                 tf=time.time()
                 insertionTimelapse.append(tf-t0)
                 insertionRateAvg=st.mean(insertionTimelapse)
-                print(f'\n>> Insertion rate average ~ {round(1/insertionRateAvg,4)} items/sec...\n')
+                print(f'\n>> Current Avg Insertion Rate ~ {round(1/insertionRateAvg,4)} items/sec in a total of {counter} iserted items...\n')
                 del t0,tf,insertionRateAvg
             else:
                 # The item already exists, ignore it
@@ -284,6 +287,7 @@ class TB_VITIMA():
         response=await self.createTable()
         table=dynamodb.Table(table_name)
         dataset=pd.DataFrame(loadedTable)
+        counter=0
 
         for v in dataset.values:
             dynamoItem={
@@ -304,13 +308,14 @@ class TB_VITIMA():
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
                 t0=time.time()
-                
+                counter+=1
+
                 table.put_item(Item=dumpedItem) # Insert item
                 
                 tf=time.time()
                 insertionTimelapse.append(tf-t0)
                 insertionRateAvg=st.mean(insertionTimelapse)
-                print(f'\n>> Insertion rate average ~ {round(1/insertionRateAvg,4)} items/sec...\n')
+                print(f'\n>> Current Avg Insertion Rate ~ {round(1/insertionRateAvg,4)} items/sec in a total of {counter} iserted items...\n')
                 del t0,tf,insertionRateAvg
             else:
                 # The item already exists, ignore it
@@ -379,6 +384,7 @@ class TB_TELEFONE():
         response=await self.createTable()
         table=dynamodb.Table(table_name)
         dataset=pd.DataFrame(loadedTable)
+        counter=0
 
         for v in dataset.values:
             dynamoItem={
@@ -397,13 +403,14 @@ class TB_TELEFONE():
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
                 t0=time.time()
-                
+                counter+=1
+
                 table.put_item(Item=dumpedItem) # Insert item
                 
                 tf=time.time()
                 insertionTimelapse.append(tf-t0)
                 insertionRateAvg=st.mean(insertionTimelapse)
-                print(f'\n>> Insertion rate average ~ {round(1/insertionRateAvg,4)} items/sec...\n')
+                print(f'\n>> Current Avg Insertion Rate ~ {round(1/insertionRateAvg,4)} items/sec in a total of {counter} iserted items...\n')
                 del t0,tf,insertionRateAvg
             else:
                 # The item already exists, ignore it
@@ -415,7 +422,7 @@ class TB_TELEFONE():
 
 
 if __name__ == "__main__":
-    
+
     begin_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     tic=time.time()
     
@@ -433,4 +440,4 @@ if __name__ == "__main__":
 
     print(f'Process started on [{begin_timestamp}] and terminated on [{end_timestamp}].\n')
     print(f'\nTotal elapsed time is {round(toc-tic,4)}s')
-    print(f'Global insertion rate average ~ {round(1/st.mean(insertionTimelapse),4)} items/sec')
+    print(f'Global Avg Insertion Rate ~ {round(1/st.mean(insertionTimelapse),4)} items/sec')
