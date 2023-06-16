@@ -460,7 +460,6 @@ class TB_TELEFONE():
     async def callDynamoService(self):
         await self.insertItems()
 
-
 if __name__ == "__main__":
 
     begin_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -482,19 +481,27 @@ if __name__ == "__main__":
 
     globalAvg=(1/4)*sumAvgs
 
+    print('_'*35)
+    print("\n[TASK FINISHED]")
+    print('_'*35)
+
+    print(f'\nProcess started on [{begin_timestamp}] and terminated on [{end_timestamp}]')
+    print(f'Total elapsed time is {round(toc-tic,4)}s')
+    print(f'Global Avg Insertion Rate ~ {round(globalAvg,4)} items/sec\n')
+
     # graphical analysis
     fig,axs=plt.subplots(2, 1, figsize=(8, 8))
     axs[0].set_title('Insertion Elapsed Time')
-    axs[0].plot(performance['avgInsertionRate']['TB_REGISTRO'],color='red',label='TB_REGISTRO',linestyle='-',linewidth=0.5)
-    axs[0].plot(performance['avgInsertionRate']['TB_ENDERECO'],color='green',label='TB_ENDERECO',linestyle='--',linewidth=0.5)
-    axs[0].plot(performance['avgInsertionRate']['TB_VITIMA'],color='blue',label='TB_VITIMA',linestyle='-.',linewidth=0.5)
-    axs[0].plot(performance['avgInsertionRate']['TB_TELEFONE'],color='purple',label='TB_TELEFONE',linestyle=':',linewidth=0.5)
+    axs[0].plot(performance['insertionTimeLapse']['TB_REGISTRO'],color='red',label='TB_REGISTRO',linestyle='-',linewidth=0.5)
+    axs[0].plot(performance['insertionTimeLapse']['TB_ENDERECO'],color='green',label='TB_ENDERECO',linestyle='--',linewidth=0.5)
+    axs[0].plot(performance['insertionTimeLapse']['TB_VITIMA'],color='blue',label='TB_VITIMA',linestyle='-.',linewidth=0.5)
+    axs[0].plot(performance['insertionTimeLapse']['TB_TELEFONE'],color='purple',label='TB_TELEFONE',linestyle=':',linewidth=0.5)
     axs[0].set_xlabel('inserted items')
     axs[0].set_ylabel('[s]')
     axs[0].legend()
 
 
-    axs[1].set_title('Average Insertion Rate [items/s]')
+    axs[1].set_title('Average Insertion Rate')
     axs[1].plot(performance['avgInsertionRate']['TB_REGISTRO'],color='red',label='TB_REGISTRO',linestyle='-',linewidth=0.5)
     axs[1].plot(performance['avgInsertionRate']['TB_ENDERECO'],color='green',label='TB_ENDERECO',linestyle='--',linewidth=0.5)
     axs[1].plot(performance['avgInsertionRate']['TB_VITIMA'],color='blue',label='TB_VITIMA',linestyle='-.',linewidth=0.5)
@@ -506,11 +513,3 @@ if __name__ == "__main__":
     plt.xlabel('Inserted Items')
     plt.tight_layout()
     plt.show()
-
-    print('_'*35)
-    print("\n[TASK FINISHED]")
-    print('_'*35)
-
-    print(f'\nProcess started on [{begin_timestamp}] and terminated on [{end_timestamp}]')
-    print(f'Total elapsed time is {round(toc-tic,4)}s')
-    print(f'Global Avg Insertion Rate ~ {round(globalAvg,4)} items/sec\n')
