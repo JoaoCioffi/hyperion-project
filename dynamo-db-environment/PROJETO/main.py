@@ -2,6 +2,7 @@ from boto3.dynamodb.conditions import Key,Attr
 from botocore.exceptions import ClientError
 from data_source import loadData
 from datetime import datetime
+import matplotlib.pyplot as plt
 import statistics as st
 import pandas as pd
 import env
@@ -20,7 +21,27 @@ dynamodb=boto3.resource(
                             aws_access_key_id=env['aws-access-key-id'], 
                             aws_secret_access_key=env['aws-secret-access-key']
                         ) # Connect to local instance
-insertionTimelapse=[] #list to append all calculated insertion time for table items
+
+performance = {
+    'insertionTimeLapse':{
+        'TB_REGISTRO':[],
+        'TB_ENDERECO':[],
+        'TB_VITIMA':[],
+        'TB_TELEFONE':[]
+    },
+    'avgInsertionRate':{
+        'TB_REGISTRO':[],
+        'TB_ENDERECO':[],
+        'TB_VITIMA':[],
+        'TB_TELEFONE':[]
+    },
+    'insertedItems':{
+        'TB_REGISTRO':[],
+        'TB_ENDERECO':[],
+        'TB_VITIMA':[],
+        'TB_TELEFONE':[]
+    }
+}
 
 class TB_REGISTRO():
     
@@ -113,19 +134,23 @@ class TB_REGISTRO():
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']) & Attr('ANO_BO').eq(dynamoItem['ANO_BO']))
             if scanTable['Count'] == 0:
                 t0=time.time()
-                counter+=1
-
                 table.put_item(Item=dumpedItem) # Insert item
-                
+                counter+=1
                 tf=time.time()
-                insertionTimelapse.append(tf-t0)
-                insertionRateAvg=st.mean(insertionTimelapse)
-                print(f'\n>> Current Avg Insertion Rate ~ {round(1/insertionRateAvg,4)} items/sec in a total of {counter} iserted items...\n')
-                del t0,tf,insertionRateAvg
+                dt=tf-t0
+                avg=1/dt
+
+                print(f'\n>> Current Avg Insertion Rate ~ {round(avg,4)} items/sec in a total of {counter} iserted items...\n')
+
+                performance['insertionTimeLapse']['TB_REGISTRO'].append(dt)
+                performance['avgInsertionRate']['TB_REGISTRO'].append(avg)
+                performance['insertedItems']['TB_REGISTRO'].append(counter)
+                
+                del t0,tf,dt,avg
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
-
+        del counter
 
     @classmethod
     async def callDynamoService(self):
@@ -211,18 +236,23 @@ class TB_ENDERECO():
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
                 t0=time.time()
-                counter+=1
-
                 table.put_item(Item=dumpedItem) # Insert item
-                
+                counter+=1
                 tf=time.time()
-                insertionTimelapse.append(tf-t0)
-                insertionRateAvg=st.mean(insertionTimelapse)
-                print(f'\n>> Current Avg Insertion Rate ~ {round(1/insertionRateAvg,4)} items/sec in a total of {counter} iserted items...\n')
-                del t0,tf,insertionRateAvg
+                dt=tf-t0
+                avg=1/dt
+
+                print(f'\n>> Current Avg Insertion Rate ~ {round(avg,4)} items/sec in a total of {counter} iserted items...\n')
+
+                performance['insertionTimeLapse']['TB_ENDERECO'].append(dt)
+                performance['avgInsertionRate']['TB_ENDERECO'].append(avg)
+                performance['insertedItems']['TB_ENDERECO'].append(counter)
+                
+                del t0,tf,dt,avg
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
+        del counter
 
     @classmethod
     async def callDynamoService(self):
@@ -308,18 +338,23 @@ class TB_VITIMA():
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
                 t0=time.time()
-                counter+=1
-
                 table.put_item(Item=dumpedItem) # Insert item
-                
+                counter+=1
                 tf=time.time()
-                insertionTimelapse.append(tf-t0)
-                insertionRateAvg=st.mean(insertionTimelapse)
-                print(f'\n>> Current Avg Insertion Rate ~ {round(1/insertionRateAvg,4)} items/sec in a total of {counter} iserted items...\n')
-                del t0,tf,insertionRateAvg
+                dt=tf-t0
+                avg=1/dt
+
+                print(f'\n>> Current Avg Insertion Rate ~ {round(avg,4)} items/sec in a total of {counter} iserted items...\n')
+
+                performance['insertionTimeLapse']['TB_VITIMA'].append(dt)
+                performance['avgInsertionRate']['TB_VITIMA'].append(avg)
+                performance['insertedItems']['TB_VITIMA'].append(counter)
+                
+                del t0,tf,dt,avg
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
+        del counter
 
     @classmethod
     async def callDynamoService(self):
@@ -403,18 +438,23 @@ class TB_TELEFONE():
             scanTable = table.scan(FilterExpression=Attr('NUM_BO').eq(dynamoItem['NUM_BO']))
             if scanTable['Count'] == 0:
                 t0=time.time()
-                counter+=1
-
                 table.put_item(Item=dumpedItem) # Insert item
-                
+                counter+=1
                 tf=time.time()
-                insertionTimelapse.append(tf-t0)
-                insertionRateAvg=st.mean(insertionTimelapse)
-                print(f'\n>> Current Avg Insertion Rate ~ {round(1/insertionRateAvg,4)} items/sec in a total of {counter} iserted items...\n')
-                del t0,tf,insertionRateAvg
+                dt=tf-t0
+                avg=1/dt
+
+                print(f'\n>> Current Avg Insertion Rate ~ {round(avg,4)} items/sec in a total of {counter} iserted items...\n')
+
+                performance['insertionTimeLapse']['TB_TELEFONE'].append(dt)
+                performance['avgInsertionRate']['TB_TELEFONE'].append(avg)
+                performance['insertedItems']['TB_TELEFONE'].append(counter)
+                
+                del t0,tf,dt,avg
             else:
                 # The item already exists, ignore it
                 print('\n>> Item already exists in the table!\nSkipping...\n')
+        del counter
 
     @classmethod
     async def callDynamoService(self):
@@ -434,10 +474,30 @@ if __name__ == "__main__":
     toc=time.time()
     end_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    sumAvgs = \
+            st.mean(performance['avgInsertionRate']['TB_REGISTRO']) + \
+            st.mean(performance['avgInsertionRate']['TB_ENDERECO']) + \
+            st.mean(performance['avgInsertionRate']['TB_VITIMA']) + \
+            st.mean(performance['avgInsertionRate']['TB_TELEFONE'])
+
+    globalAvg=(1/4)*sumAvgs
+
+    # graphical analysis
+    plt.plot(performance['avgInsertionRate']['TB_REGISTRO'],color='red',label='TB_REGISTRO')
+    plt.plot(performance['avgInsertionRate']['TB_ENDERECO'],color='green',label='TB_ENDERECO')
+    plt.plot(performance['avgInsertionRate']['TB_VITIMA'],color='blue',label='TB_VITIMA')
+    plt.plot(performance['avgInsertionRate']['TB_TELEFONE'],color='black',label='TB_TELEFONE')
+
+    plt.ylim(0,1000)
+    plt.legend()
+    plt.xlabel('Inserted Items')
+    plt.ylabel('Average Insertion Rate [items/sec]')
+    plt.show()
+
     print('_'*35)
     print("\n[TASK FINISHED]")
     print('_'*35)
 
-    print(f'Process started on [{begin_timestamp}] and terminated on [{end_timestamp}].\n')
-    print(f'\nTotal elapsed time is {round(toc-tic,4)}s')
-    print(f'Global Avg Insertion Rate ~ {round(1/st.mean(insertionTimelapse),4)} items/sec')
+    print(f'\nProcess started on [{begin_timestamp}] and terminated on [{end_timestamp}]')
+    print(f'Total elapsed time is {round(toc-tic,4)}s')
+    print(f'Global Avg Insertion Rate ~ {round(globalAvg,4)} items/sec\n')
