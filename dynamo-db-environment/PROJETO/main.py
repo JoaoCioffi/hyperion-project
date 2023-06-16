@@ -488,7 +488,7 @@ if __name__ == "__main__":
     plt.plot(performance['avgInsertionRate']['TB_VITIMA'],color='blue',label='TB_VITIMA')
     plt.plot(performance['avgInsertionRate']['TB_TELEFONE'],color='black',label='TB_TELEFONE')
 
-    plt.ylim(0,1000)
+    plt.ylim(100,500)
     plt.legend()
     plt.xlabel('Inserted Items')
     plt.ylabel('Average Insertion Rate [items/sec]')
