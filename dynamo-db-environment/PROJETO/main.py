@@ -1,4 +1,4 @@
-from boto3.dynamodb.conditions import Key,Attr
+from boto3.dynamodb.conditions import Attr
 from botocore.exceptions import ClientError
 from data_source import loadData
 from datetime import datetime
@@ -23,7 +23,7 @@ dynamodb=boto3.resource(
                         ) # Connect to local instance
 
 performance = {
-    'insertionTimeLapse':{
+    'insertionElapsedTime':{
         'TB_REGISTRO':[],
         'TB_ENDERECO':[],
         'TB_VITIMA':[],
@@ -142,7 +142,7 @@ class TB_REGISTRO():
 
                 print(f'\n>> Current Avg Insertion Rate ~ {round(avg,4)} items/sec in a total of {counter} iserted items...\n')
 
-                performance['insertionTimeLapse']['TB_REGISTRO'].append(dt)
+                performance['insertionElapsedTime']['TB_REGISTRO'].append(dt)
                 performance['avgInsertionRate']['TB_REGISTRO'].append(avg)
                 performance['insertedItems']['TB_REGISTRO'].append(counter)
                 
@@ -212,7 +212,7 @@ class TB_ENDERECO():
                             loadedTable=tables['TB_ENDERECO'].values
                         ):
         counter=0
-        response=await self.createTable()
+        await self.createTable()
         table=dynamodb.Table(table_name)
         dataset=pd.DataFrame(loadedTable)
 
@@ -244,7 +244,7 @@ class TB_ENDERECO():
 
                 print(f'\n>> Current Avg Insertion Rate ~ {round(avg,4)} items/sec in a total of {counter} iserted items...\n')
 
-                performance['insertionTimeLapse']['TB_ENDERECO'].append(dt)
+                performance['insertionElapsedTime']['TB_ENDERECO'].append(dt)
                 performance['avgInsertionRate']['TB_ENDERECO'].append(avg)
                 performance['insertedItems']['TB_ENDERECO'].append(counter)
                 
@@ -346,7 +346,7 @@ class TB_VITIMA():
 
                 print(f'\n>> Current Avg Insertion Rate ~ {round(avg,4)} items/sec in a total of {counter} iserted items...\n')
 
-                performance['insertionTimeLapse']['TB_VITIMA'].append(dt)
+                performance['insertionElapsedTime']['TB_VITIMA'].append(dt)
                 performance['avgInsertionRate']['TB_VITIMA'].append(avg)
                 performance['insertedItems']['TB_VITIMA'].append(counter)
                 
@@ -446,7 +446,7 @@ class TB_TELEFONE():
 
                 print(f'\n>> Current Avg Insertion Rate ~ {round(avg,4)} items/sec in a total of {counter} iserted items...\n')
 
-                performance['insertionTimeLapse']['TB_TELEFONE'].append(dt)
+                performance['insertionElapsedTime']['TB_TELEFONE'].append(dt)
                 performance['avgInsertionRate']['TB_TELEFONE'].append(avg)
                 performance['insertedItems']['TB_TELEFONE'].append(counter)
                 
@@ -492,14 +492,13 @@ if __name__ == "__main__":
     # graphical analysis
     fig,axs=plt.subplots(2, 1, figsize=(8, 8))
     axs[0].set_title('Insertion Elapsed Time')
-    axs[0].plot(performance['insertionTimeLapse']['TB_REGISTRO'],color='red',label='TB_REGISTRO',linestyle='-',linewidth=0.5)
-    axs[0].plot(performance['insertionTimeLapse']['TB_ENDERECO'],color='green',label='TB_ENDERECO',linestyle='--',linewidth=0.5)
-    axs[0].plot(performance['insertionTimeLapse']['TB_VITIMA'],color='blue',label='TB_VITIMA',linestyle='-.',linewidth=0.5)
-    axs[0].plot(performance['insertionTimeLapse']['TB_TELEFONE'],color='purple',label='TB_TELEFONE',linestyle=':',linewidth=0.5)
+    axs[0].plot(performance['insertionElapsedTime']['TB_REGISTRO'],color='red',label='TB_REGISTRO',linestyle='-',linewidth=0.5)
+    axs[0].plot(performance['insertionElapsedTime']['TB_ENDERECO'],color='green',label='TB_ENDERECO',linestyle='--',linewidth=0.5)
+    axs[0].plot(performance['insertionElapsedTime']['TB_VITIMA'],color='blue',label='TB_VITIMA',linestyle='-.',linewidth=0.5)
+    axs[0].plot(performance['insertionElapsedTime']['TB_TELEFONE'],color='purple',label='TB_TELEFONE',linestyle=':',linewidth=0.5)
     axs[0].set_xlabel('inserted items')
     axs[0].set_ylabel('[s]')
     axs[0].legend()
-
 
     axs[1].set_title('Average Insertion Rate')
     axs[1].plot(performance['avgInsertionRate']['TB_REGISTRO'],color='red',label='TB_REGISTRO',linestyle='-',linewidth=0.5)
@@ -510,6 +509,5 @@ if __name__ == "__main__":
     axs[1].set_ylabel('[items/s]')
     axs[1].legend()
 
-    plt.xlabel('Inserted Items')
     plt.tight_layout()
     plt.show()
