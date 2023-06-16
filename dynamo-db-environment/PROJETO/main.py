@@ -483,15 +483,28 @@ if __name__ == "__main__":
     globalAvg=(1/4)*sumAvgs
 
     # graphical analysis
-    plt.plot(performance['avgInsertionRate']['TB_REGISTRO'],color='red',label='TB_REGISTRO')
-    plt.plot(performance['avgInsertionRate']['TB_ENDERECO'],color='green',label='TB_ENDERECO')
-    plt.plot(performance['avgInsertionRate']['TB_VITIMA'],color='blue',label='TB_VITIMA')
-    plt.plot(performance['avgInsertionRate']['TB_TELEFONE'],color='black',label='TB_TELEFONE')
+    fig,axs=plt.subplots(2, 1, figsize=(8, 8))
+    axs[0].set_title('Insertion Elapsed Time')
+    axs[0].plot(performance['avgInsertionRate']['TB_REGISTRO'],color='red',label='TB_REGISTRO',linestyle='-',linewidth=0.5)
+    axs[0].plot(performance['avgInsertionRate']['TB_ENDERECO'],color='green',label='TB_ENDERECO',linestyle='--',linewidth=0.5)
+    axs[0].plot(performance['avgInsertionRate']['TB_VITIMA'],color='blue',label='TB_VITIMA',linestyle='-.',linewidth=0.5)
+    axs[0].plot(performance['avgInsertionRate']['TB_TELEFONE'],color='purple',label='TB_TELEFONE',linestyle=':',linewidth=0.5)
+    axs[0].set_xlabel('inserted items')
+    axs[0].set_ylabel('[s]')
+    axs[0].legend()
 
-    plt.ylim(100,500)
-    plt.legend()
+
+    axs[1].set_title('Average Insertion Rate [items/s]')
+    axs[1].plot(performance['avgInsertionRate']['TB_REGISTRO'],color='red',label='TB_REGISTRO',linestyle='-',linewidth=0.5)
+    axs[1].plot(performance['avgInsertionRate']['TB_ENDERECO'],color='green',label='TB_ENDERECO',linestyle='--',linewidth=0.5)
+    axs[1].plot(performance['avgInsertionRate']['TB_VITIMA'],color='blue',label='TB_VITIMA',linestyle='-.',linewidth=0.5)
+    axs[1].plot(performance['avgInsertionRate']['TB_TELEFONE'],color='purple',label='TB_TELEFONE',linestyle=':',linewidth=0.5)
+    axs[1].set_xlabel('inserted items')
+    axs[1].set_ylabel('[items/s]')
+    axs[1].legend()
+
     plt.xlabel('Inserted Items')
-    plt.ylabel('Average Insertion Rate [items/sec]')
+    plt.tight_layout()
     plt.show()
 
     print('_'*35)
