@@ -511,3 +511,5 @@ if __name__ == "__main__":
 
     plt.tight_layout()
     plt.show()
+
+    del begin_timestamp,tic,toc,end_timestamp,sumAvgs,globalAvg,fig,axs
