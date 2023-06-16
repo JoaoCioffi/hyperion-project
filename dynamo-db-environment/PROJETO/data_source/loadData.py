@@ -43,10 +43,10 @@ def tablesGenerator(filename='rawData.csv'):
     ]
 
     createdTables={
-        'TB_REGISTRO':TB_REGISTRO.head(50),
-        'TB_ENDERECO':TB_ENDERECO.head(50),
-        'TB_VITIMA':TB_VITIMA.head(50),
-        'TB_TELEFONE':TB_TELEFONE.head(50)
+        'TB_REGISTRO':TB_REGISTRO,
+        'TB_ENDERECO':TB_ENDERECO,
+        'TB_VITIMA':TB_VITIMA,
+        'TB_TELEFONE':TB_TELEFONE
     }
 
     print(TB_REGISTRO.head(),'\n\n',TB_ENDERECO.head(),'\n\n',TB_VITIMA.head(),'\n\n',TB_TELEFONE.head(),'\n\n')
