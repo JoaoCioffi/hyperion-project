@@ -47,7 +47,7 @@ Welcome to
 
     Refresh the file to save the environmental variables with the following command:
 
-    ```Source ~/.bashrc```
+    ```source ~/.bashrc```
 
 5. With that, you now have Apache Spark installed on your Ubuntu 22.04. With Apache Spark installed, it implies that you have PySpark also installed with it. Let’s first verify that Apache Spark is installed successfully. Open the spark shell by running the spark-shell command.
     
@@ -63,6 +63,6 @@ Welcome to
 
     Suppose you don’t get PySpark installed with this option, you can utilize pip to install it. For that, run the following pip command:
 
-    ```pip install pyspark```
+    ```pip3 install pyspark```
 
     Pip downloads and sets up PySpark on your Ubuntu 22.04. You can start using it for your data analytics tasks.
