@@ -6,6 +6,7 @@ def environment(dotEnv=load_dotenv()):
         'client-socket':{
             'port':os.getenv('PORT'),
             'wifi-name':os.getenv('WIFI_NAME'),
+            'wifi-pw':os.getenv('WIFI_PW'),
             'tello-ip':os.getenv('TELLO_IP'),
         },
         'server-socket-for-video-stream':{
