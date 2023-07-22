@@ -6,6 +6,11 @@ env=env.environment()
 
 def screenContent():
     
+    def decodeSubProc(cmd):
+      output=subprocess.check_output(cmd,shell=True,text=False,stderr=subprocess.STDOUT)
+      decoded=re.sub(b"\x1b\[2K\r|\\\'|\n", b"",output).decode("utf-8")
+      return decoded
+    
     # Function to test Tello connection
     def testTelloConnection():
       try:
@@ -18,7 +23,7 @@ def screenContent():
          response=re.sub(b"\x1b\[2K\r|\\\'|\n", b"",response).decode("utf-8")
          return response
       except:
-         return "Connection test failed."
+         return "Not connected"
         
 
     print(f"""
@@ -68,12 +73,13 @@ def screenContent():
       .
                 
     [Info]
-    
-        ROS2 ............................... {subprocess.check_output('which ros2', shell=True, text=False, stderr=subprocess.STDOUT)}
+          
+        HOST OS ............................ {decodeSubProc('cat /etc/issue')}
+        ROS2 ............................... {decodeSubProc('which ros2')}
         PORT ............................... {env['client-socket']['port']}
         WIFI NAME .......................... {env['client-socket']['wifi-name']}
         CLIENT IP .......................... {env['client-socket']['tello-ip']}
-        CONNECTION TEST .................... {testTelloConnection()}
+        CONNECTION STATUS .................. {testTelloConnection()}
 
     """)
 
