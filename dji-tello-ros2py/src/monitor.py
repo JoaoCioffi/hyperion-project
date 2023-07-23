@@ -7,9 +7,9 @@ env=env.environment()
 def screenContent():
     
     def decodeSubProc(cmd):
-      output=subprocess.check_output(cmd,shell=True,text=False,stderr=subprocess.STDOUT)
-      decoded=re.sub(b"\x1b\[2K\r|\\\'|\n", b"",output).decode("utf-8")
-      return decoded
+      decoded=subprocess.check_output(cmd,shell=True,text=False,stderr=subprocess.STDOUT)
+      decoded=re.sub(b"\x1b\[2K\r|\\\'|\n", b"",decoded).decode("utf-8")
+      return str(decoded).replace('\\n', '').replace('\l', '')
     
     # Function to test Tello connection
     def testTelloConnection():
@@ -21,7 +21,7 @@ def screenContent():
                                           text=False,
                                           stderr=subprocess.STDOUT)
          response=re.sub(b"\x1b\[2K\r|\\\'|\n", b"",response).decode("utf-8")
-         return response
+         return str(response)
       except:
          return "Not connected"
         
