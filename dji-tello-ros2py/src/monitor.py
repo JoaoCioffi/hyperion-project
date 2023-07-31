@@ -82,5 +82,3 @@ def screenContent():
         CONNECTION STATUS .................. {testTelloConnection()}
 
     """)
-
-screenContent()

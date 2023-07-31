@@ -869,7 +869,7 @@ class Tello():
         Returns:
             int: 1-100
         """
-        return self.send_read_command_int('speed?')
+        return '\n>> Current Speed: ' + self.send_read_command_int('speed?') + 'cm/s\n'
 
     def query_battery(self) -> int:
         """Get current battery percentage via a query command
@@ -877,7 +877,7 @@ class Tello():
         Returns:
             int: 0-100 in %
         """
-        return self.send_read_command_int('battery?')
+        return '\n>> Current Battery Level: ' + self.send_read_command_int('battery?') + '%\n'
 
     def query_flight_time(self) -> int:
         """Query current fly time (s).
@@ -885,7 +885,7 @@ class Tello():
         Returns:
             int: Seconds elapsed during flight.
         """
-        return self.send_read_command_int('time?')
+        return '\n>> Current Flight Time: ' + self.send_read_command_int('time?') +'s\n'
 
     def query_height(self) -> int:
         """Get height in cm via a query command.
@@ -893,7 +893,7 @@ class Tello():
         Returns:
             int: 0-3000
         """
-        return self.send_read_command_int('height?')
+        return '\n>> Current Height: ' + self.send_read_command_int('height?') + 'cm\n'
 
     def query_temperature(self) -> int:
         """Query temperature (°C).
@@ -901,7 +901,7 @@ class Tello():
         Returns:
             int: 0-90
         """
-        return self.send_read_command_int('temp?')
+        return '\n>> Current Temperature: ' +  self.send_read_command_int('temp?') + '°C\n'
 
     def query_attitude(self) -> dict:
         """Query IMU attitude data.
@@ -910,7 +910,7 @@ class Tello():
             {'pitch': int, 'roll': int, 'yaw': int}
         """
         response = self.send_read_command('attitude?')
-        return Tello.parse_state(response)
+        return '\n>> Current Altitude: ' + Tello.parse_state(response) + 'm\n'
 
     def query_barometer(self) -> int:
         """Get barometer value (cm)
@@ -919,7 +919,7 @@ class Tello():
             int: 0-100
         """
         baro = self.send_read_command_int('baro?')
-        return baro * 100
+        return '\n>> Current Barometer Value: ' + baro * 100 + 'cmHg\n'
 
     def query_distance_tof(self) -> float:
         """Get distance value from TOF (cm)
