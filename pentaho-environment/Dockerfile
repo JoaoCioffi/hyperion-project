@@ -1,75 +1,49 @@
-FROM    ubuntu:18.04
+FROM openjdk:8
 
-# Install primary dependencies
-RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
-	apt-get clean && apt-get update && \
-  apt-get install -y locales && \
-  locale-gen en_US.UTF-8 && \
-  apt-get install -y software-properties-common unzip git lftp sudo zip curl wget && \
-	sudo apt install -y openjdk-8-jdk && \
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer && \
-	echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
-	rm -rf /tmp/*
+MAINTAINER Luan luan.m.paschoal@gmail.com
+LABEL Pentaho='Server 9.0 com drivers postgres e oracle'
 
-# Set the locale
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8 
-RUN update-locale LANG=en_US.UTF-8 LC_MESSAGES=POSIX
+# Init ENV
+ENV BISERVER_VERSION 9.0
+ENV BISERVER_TAG 9.0.0.0-423
+ENV PENTAHO_HOME /opt/pentaho
 
-# Fix certificate issues, found as of 
-# https://bugs.launchpad.net/ubuntu/+source/ca-certificates-java/+bug/983302
-RUN apt-get install -y ca-certificates-java && \
-	apt-get clean && \
-	update-ca-certificates -f && \
-	rm -rf /var/lib/apt/lists/* && \
-	rm -rf /var/cache/oracle-jdk8-installer;
+# Apply JAVA_HOME
+ENV PENTAHO_JAVA_HOME $JAVA_HOME
+ENV PENTAHO_JAVA_HOME /usr/local/openjdk-8
+ENV JAVA_HOME /usr/local/openjdk-8
+RUN . /etc/environment \
+ export JAVA_HOME
 
-# Making the right java available
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
-RUN export JAVA_HOME
+# Install Dependences
+RUN apt-get update; apt-get install zip -y; \
+apt-get install wget unzip git vim -y; \
+apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*;
 
-# Configs directories and users for pentaho 
-RUN mkdir /pentaho && \
-  mkdir /home/pentaho && \
-  mkdir /home/pentaho/.kettle && \
-  mkdir /home/pentaho/.aws && \
-  groupadd -r pentaho && \
-  useradd -r -g pentaho -p $(perl -e'print crypt("pentaho", "aa")' ) -G sudo pentaho && \ 
-  chown -R pentaho.pentaho /pentaho && \ 
-  chown -R pentaho.pentaho /home/pentaho
+RUN mkdir ${PENTAHO_HOME}; useradd -s /bin/bash -d ${PENTAHO_HOME} pentaho; chown -R pentaho:pentaho ${PENTAHO_HOME};
 
-WORKDIR /pentaho
+# Download Pentaho BI Server
+# Disable first-time startup prompt
+# Disable daemon mode for Tomcat
+RUN /usr/bin/wget --progress=dot:giga \
+"http://downloads.sourceforge.net/project/pentaho/Pentaho%20${BISERVER_VERSION}/server/pentaho-server-ce-${BISERVER_TAG}.zip" \
+-O /tmp/pentaho-server-ce-${BISERVER_TAG}.zip; \
+/usr/bin/unzip -q /tmp/pentaho-server-ce-${BISERVER_TAG}.zip -d $PENTAHO_HOME; \
+rm -f /tmp/pentaho-server-ce-${BISERVER_TAG}.zip $PENTAHO_HOME/pentaho-server/promptuser.sh; \
+sed -i -e 's/\(exec ".*"\) start/\1 run/' $PENTAHO_HOME/pentaho-server/tomcat/bin/startup.sh; \
+chmod +x $PENTAHO_HOME/pentaho-server/start-pentaho.sh;
+
+#ADD DB drivers
+COPY ./lib/. $PENTAHO_HOME/pentaho-server/tomcat/lib
+
+#COPY ./scripts/. ${PENTAHO_HOME}/pentaho-server/scripts
+
+#Always non-root user
 USER pentaho
-ARG PENTAHO_DOWNLOAD_URL=https://netcologne.dl.sourceforge.net/project/pentaho/Pentaho%208.3/client-tools/pdi-ce-8.3.0.0-371.zip
 
-# Downloads pentaho
-RUN wget -q -O kettle.zip ${PENTAHO_DOWNLOAD_URL} && \
-  unzip -qq kettle.zip && \
-  rm -rf kettle.zip
+WORKDIR /opt/pentaho
 
-WORKDIR /pentaho/data-integration
+EXPOSE 8080 8009
 
-# Adds connections config files
-ADD --chown=pentaho:pentaho scripts/* ./
-
-# Changes spoon.sh to expose memory to env-vars
-RUN sed -i \
-  's/-Xmx[0-9]\+m/-Xmx\$\{_RUN_XMX:-2048\}m/g' spoon.sh 
-
-ENV PDI_HOME /pentaho/data-integration
-
-RUN sudo apt-get update && \
-    sudo apt-get install -y \
-        python3-pip \
-        python3-setuptools \
-        groff \
-        less \
-    && pip3 install --upgrade pip \
-    && sudo apt-get clean
-
-RUN sudo python3 -m pip --no-cache-dir install --upgrade awscli 
-
-ENTRYPOINT ["/pentaho/data-integration/run.sh"]
+CMD ["sh", "/opt/pentaho/pentaho-server/start-pentaho.sh"]
+#ENTRYPOINT ["sh", "-c", "$PENTAHO_HOME/pentaho-server/scripts/run.sh"]
