@@ -5,7 +5,6 @@ import cv2
 import logging
 import socket
 import time
-from dotenv import load_dotenv
 import os
 
 threads_initialized = False
