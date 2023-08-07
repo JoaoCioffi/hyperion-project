@@ -1,5 +1,5 @@
 from threading import Thread
-from .enforce_types import enforce_types
+from enforce_types import enforce_types
 from typing import Optional, Union, Type, Dict
 import cv2
 import logging
@@ -16,11 +16,31 @@ client_socket: socket.socket
 class Tello():
     
     # Send and receive commands, client socket
-    TELLO_IP,\
-    RETRY_COUNT,\
-    RESPONSE_TIMEOUT=os.getenv('TELLO_IP'),\
-                     os.getenv('RETRY_COUNT'),\
-                     os.getenv('RESPONSE_TIMEOUT')
+    RESPONSE_TIMEOUT,TAKEOFF_TIMEOUT,\
+    FRAME_GRAB_TIMEOUT,TIME_BTW_COMMANDS,\
+    TIME_BTW_RC_CONTROL_COMMANDS,RETRY_COUNT,\
+    TELLO_IP=os.getenv('RESPONSE_TIMEOUT'),os.getenv('TAKEOFF_TIMEOUT'),\
+             os.getenv('FRAME_GRAB_TIMEOUT'),os.getenv('TIME_BTW_COMMANDS'),\
+             os.getenv('TIME_BTW_RC_CONTROL_COMMANDS'),os.getenv('RETRY_COUNT'),os.getenv('TELLO_IP')
+
+    # Video stream, server socket
+    VS_UDP_IP,VS_UDP_PORT,CONTROL_UDP_PORT,\
+    STATE_UDP_PORT=os.getenv('VS_UDP_IP'),os.getenv('VS_UDP_PORT'),\
+                   os.getenv('CONTROL_UDP_PORT'),os.getenv('STATE_UDP_PORT')
+
+    # Constants for video settings
+    BITRATE_AUTO,BITRATE_1MBPS,\
+    BITRATE_2MBPS,BITRATE_3MBPS,\
+    BITRATE_4MBPS,BITRATE_5MBPS,\
+    RESOLUTION_480P,RESOLUTION_720P,\
+    FPS_5,FPS_15,\
+    FPS_30,CAMERA_FORWARD,\
+    CAMERA_DOWNWARD=os.getenv('BITRATE_AUTO'),os.getenv('BITRATE_1MBPS'),\
+                    os.getenv('BITRATE_2MBPS'),os.getenv('BITRATE_3MBPS'),\
+                    os.getenv('BITRATE_4MBPS'),os.getenv('BITRATE_5MBPS'),\
+                    os.getenv('RESOLUTION_480P'),os.getenv('RESOLUTION_720P'),\
+                    os.getenv('FPS_5'),os.getenv('FPS_15'),\
+                    os.getenv('FPS_30'),os.getenv('CAMERA_FORWARD'),os.getenv('CAMERA_DOWNWARD')
 
     # Set up logger
     HANDLER = logging.StreamHandler()

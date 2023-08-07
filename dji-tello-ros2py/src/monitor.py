@@ -1,8 +1,6 @@
 import subprocess
-import env
 import re
-
-env=env.environment()
+import os
 
 def screenContent():
     
@@ -11,21 +9,6 @@ def screenContent():
       decoded=re.sub(b"\x1b\[2K\r|\\\'|\n", b"",decoded).decode("utf-8")
       return str(decoded).replace('\\n', '').replace('\l', '')
     
-    # Function to test Tello connection
-    def testTelloConnection():
-      try:
-         network_ssid=env['client-socket']['wifi-name']
-         network_pw=env['client-socket']['wifi-pw']
-         response=subprocess.check_output(f'nmcli device wifi connect {network_ssid} password {network_pw}',
-                                          shell=True,
-                                          text=False,
-                                          stderr=subprocess.STDOUT)
-         response=re.sub(b"\x1b\[2K\r|\\\'|\n", b"",response).decode("utf-8")
-         return str(response)
-      except:
-         return "Not connected"
-        
-
     print(f"""
 
                                ____      _ ___   _____    _ _                             
@@ -76,9 +59,8 @@ def screenContent():
           
         HOST OS ............................ {decodeSubProc('cat /etc/issue')}
         ROS2 ............................... {decodeSubProc('which ros2')}
-        PORT ............................... {env['client-socket']['port']}
-        WIFI NAME .......................... {env['client-socket']['wifi-name']}
-        CLIENT IP .......................... {env['client-socket']['tello-ip']}
-        CONNECTION STATUS .................. {testTelloConnection()}
-
+        PORT ............................... {os.getenv('PORT')}
+        WIFI NAME .......................... {os.getenv('WIFI_NAME')}
+        CLIENT IP .......................... {os.getenv('TELLO_IP')}
+        
     """)
