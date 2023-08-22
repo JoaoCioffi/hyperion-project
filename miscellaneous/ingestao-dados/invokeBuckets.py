@@ -9,6 +9,8 @@ class Banks():
     def loadBucketContent(self,filePath="./buckets/banks/EnquadramentoInicia_v2.csv"):
         print(f'\n\n~Loading file from {filePath}~\n')
         df=spark.read.csv(filePath,header=True,inferSchema=True,sep=';') # read the CSV file into a DataFrame
+        df=df.na.drop(subset=['cnpj']) # drops rows with null "cnpj" values
+        print(f"\n>> Loaded DF Columns: {df.columns}\n")
         df.show()
         return df
 
@@ -20,6 +22,8 @@ class Complaints():
     def loadBucketContent(self,filePath='./buckets/complaints/geral.csv'):
         print(f'\n\n~Loading file from {filePath}~\n')
         df=spark.read.csv(filePath,header=True,inferSchema=True,sep=';') # read the CSV file into a DataFrame
+        df=df.na.drop(subset=['cnpj']) # drops rows with null "cnpj" values
+        print(f"\n>> Loaded DF Columns: {df.columns}\n")
         df.show()
         return df
 
@@ -31,5 +35,7 @@ class Employees():
     def loadBucketContent(self,filePath='./buckets/employees/glassdoor_consolidado_join_match.csv'):
         print(f'\n\n~Loading file from {filePath}~\n')
         df=spark.read.csv(filePath,header=True,inferSchema=True,sep=';') # read the CSV file into a DataFrame
+        df=df.na.drop(subset=['cnpj']) # drops rows with null "cnpj" values
+        print(f"\n>> Loaded DF Columns: {df.columns}\n")
         df.show()
         return df
