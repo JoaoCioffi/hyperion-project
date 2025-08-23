@@ -6,9 +6,6 @@ Welcome to the Hyperion Project repository! This repository aims to provide a co
 
 - [Introduction](#introduction)
 - [Contents](#contents)
-- [Getting Started](#getting-started)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
